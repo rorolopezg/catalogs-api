@@ -15,7 +15,7 @@
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 	-->
-	<groupId>cl.kopernicus.springcloud.msvc.catalogs</groupId>
+	<groupId>pa.com.sura.catalogs</groupId>
 	<artifactId>api-catalogs</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>api-catalogs</name>
