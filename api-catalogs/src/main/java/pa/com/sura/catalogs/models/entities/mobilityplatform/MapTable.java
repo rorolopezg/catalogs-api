@@ -1,4 +1,4 @@
-package pa.com.sura.catalogs.models.entities;
+package pa.com.sura.catalogs.models.entities.mobilityplatform;
 
 import jakarta.persistence.*;
 

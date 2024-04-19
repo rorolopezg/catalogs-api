@@ -1,7 +1,7 @@
 package pa.com.sura.catalogs.services;
 
-import pa.com.sura.catalogs.models.entities.MapTable;
-import pa.com.sura.catalogs.repositories.CatalogRepository;
+import pa.com.sura.catalogs.models.entities.mobilityplatform.MapTable;
+import pa.com.sura.catalogs.repositories.mobilityplatform.CatalogRepository;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;

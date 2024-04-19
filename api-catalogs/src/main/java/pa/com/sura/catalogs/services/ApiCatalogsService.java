@@ -1,6 +1,6 @@
 package pa.com.sura.catalogs.services;
 
-import pa.com.sura.catalogs.models.entities.MapTable;
+import pa.com.sura.catalogs.models.entities.mobilityplatform.MapTable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

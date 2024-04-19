@@ -3,7 +3,7 @@ package pa.com.sura.catalogs.controllers;
 import pa.com.sura.catalogs.models.dto.mappings.ListOfMapsDTO;
 import pa.com.sura.catalogs.models.dto.mappings.MapSystemDTO;
 import pa.com.sura.catalogs.models.entities.premium.CatalogItem;
-import pa.com.sura.catalogs.models.entities.MapTable;
+import pa.com.sura.catalogs.models.entities.mobilityplatform.MapTable;
 import pa.com.sura.catalogs.models.dto.mappings.MappingObjectDTO;
 import pa.com.sura.catalogs.models.errors.ApiError;
 import pa.com.sura.catalogs.services.ApiCatalogsService;
@@ -110,7 +110,6 @@ public class ApiCatalogsController {
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 
         } catch (DataAccessException e) {
-            response.put("mensaje", "Error al consultar la bbdd");
             response.put("Error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
