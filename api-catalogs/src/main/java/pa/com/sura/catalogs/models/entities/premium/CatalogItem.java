@@ -1,24 +1,29 @@
 package pa.com.sura.catalogs.models.entities.premium;
 
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
 public class CatalogItem {
 
-    private String id;
-    private String name;
+    @Id
+    private String codigo;
+    private String nombre;
 
-    public String getId() {
-        return id;
+    public String getCodigo() {
+        return codigo;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
-    public String getName() {
-        return name;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 }

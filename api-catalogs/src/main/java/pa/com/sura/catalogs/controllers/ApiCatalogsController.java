@@ -40,6 +40,8 @@ public class ApiCatalogsController {
     private static final String BTOA_MODE = "btoa";
     private static final String ALL_MODE = "allcoincidences";
 
+    private static final String MODELS = "MODELS";
+
 
     @Autowired
     private ApiCatalogsService service;
@@ -103,6 +105,31 @@ public class ApiCatalogsController {
             @RequestParam(value = "filters", required = false) @Valid String filters
     ) {
         Map<String, Object> response = new HashMap<>();
+        Map<String, String> traducciones = new HashMap<>();
+
+        traducciones.put("COUNTRIES", "PAISES");
+        traducciones.put("STATES", "PROVINCIAS");
+        traducciones.put("REGIONS", "DISTRITOS");
+        traducciones.put("CITIES", "CORREGIMIENTOS");
+        traducciones.put("OCCUPATIONS", "OCUPACIONES");
+        traducciones.put("MAKERS", "MARCAS");
+        traducciones.put("MODELS", "MODELOS");
+        traducciones.put("COLORS", "COLORES");
+        traducciones.put("CIRCULATION_AREAS", "ZONAS_DE_CIRCULACION");
+        traducciones.put("CHASSIS_TYPES", "TIPOS_DE_CHASIS");
+        traducciones.put("UNIT_USES", "USOS_DE_UNIDAD");
+        traducciones.put("CREDITORS", "ACREEDORES");
+        traducciones.put("RAMOS", "RAMOS");
+        traducciones.put("SEXS", "SEXOS");
+        traducciones.put("MATRIAL_STATUSES", "ECIVIL");
+        //traducciones.put("POSITIONS", "TBD");
+
+        catalogType = traducciones.getOrDefault(catalogType, catalogType);
+
+        if (filters != null && filters.contains("=")) {
+            filters = filters.substring(filters.indexOf("=") + 1);
+        }
+
         try {
             List<CatalogItem> catalogItems = procedurePremService.findCatalogs(catalogType,filters);
 
@@ -126,6 +153,8 @@ public class ApiCatalogsController {
             @RequestHeader(value = "x-client-application-flow", required = false) String xClientApplicationFlow
     ) {
         Map<String, Object> response = new HashMap<String, Object>();
+
+
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
