@@ -1,12 +1,12 @@
 spring.application.name=api-catalogs
-server.port=${PORT:8003}
 
-spring.datasource.mysql.url=jdbc:mysql://localhost:3306/db_mapping_backend
-spring.datasource.mysql.jdbcUrl=jdbc:mysql://localhost:3306/db_mapping_backend
-spring.datasource.mysql.username=root
-spring.datasource.mysql.password=KPS2023
-spring.datasource.mysql.driver-class-name=com.mysql.cj.jdbc.Driver
+#spring.profiles.active=devcloud
+spring.profiles.active=devlocal
 
+spring.datasource.mysql.url=jdbc:mysql://${DB_HOST:10.211.55.2:31177}/${DB_DATABASE:msvc_usuarios}
+spring.datasource.mysql.username=${DB_USERNAME:root}
+spring.datasource.mysql.password=${DB_PASSWORD:Cduc1978.}
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 spring.mysql.jpa.database-platform=org.hibernate.dialect.MySQLDialect
 spring.mysql.jpa.hibernate.ddl-auto=create-drop
 spring.mysql.jpa.generate-ddl=true
@@ -22,8 +22,7 @@ logging.level.org.hibernate.SQL=debug
 logging.file.path=/app/logs
 logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE
 
-springdoc.show-actuator=true
-management.endpoints.web.exposure.include=health,metrics
+management.endpoints.web.exposure.include=*
 management.endpoint.health.show-details=always
 management.endpoint.health.probes.enabled=true
 management.health.livenessstate.enabled=true

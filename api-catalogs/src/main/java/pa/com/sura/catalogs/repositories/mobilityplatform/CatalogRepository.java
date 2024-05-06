@@ -1,5 +1,6 @@
 package pa.com.sura.catalogs.repositories.mobilityplatform;
 
+import org.springframework.stereotype.Repository;
 import pa.com.sura.catalogs.models.entities.mobilityplatform.MapTable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface CatalogRepository extends JpaRepository<MapTable, Long> {
     /* Obtiene mapeos específicos de un catálogo, sistema A, código A y sistema B */
     @Query("select mt from MapTable mt where mt.mappingType = ?1 and mt.systemA = ?2 and mt.systemB = ?3 and mt.codeA = ?4")

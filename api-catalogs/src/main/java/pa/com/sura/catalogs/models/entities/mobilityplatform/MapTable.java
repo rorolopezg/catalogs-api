@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(uniqueConstraints = {
+@Table(name ="map_table", uniqueConstraints = {
         @UniqueConstraint(name = "UniqueSystemA", columnNames = {"mapping_type", "system_a", "code_a", "system_b"}),
         @UniqueConstraint(name = "UniqueSystemB", columnNames = {"mapping_type", "system_b", "code_b", "system_a"})
 })

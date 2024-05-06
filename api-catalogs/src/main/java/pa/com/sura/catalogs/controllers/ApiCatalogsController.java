@@ -2,11 +2,13 @@ package pa.com.sura.catalogs.controllers;
 
 import pa.com.sura.catalogs.models.dto.mappings.ListOfMapsDTO;
 import pa.com.sura.catalogs.models.dto.mappings.MapSystemDTO;
+import pa.com.sura.catalogs.models.entities.mobilityplatform.CatalogType;
 import pa.com.sura.catalogs.models.entities.premium.CatalogItem;
 import pa.com.sura.catalogs.models.entities.mobilityplatform.MapTable;
 import pa.com.sura.catalogs.models.dto.mappings.MappingObjectDTO;
 import pa.com.sura.catalogs.models.errors.ApiError;
 import pa.com.sura.catalogs.services.ApiCatalogsService;
+import pa.com.sura.catalogs.services.CatalogTypeService;
 import pa.com.sura.catalogs.services.ProcedurePremService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -40,11 +42,12 @@ public class ApiCatalogsController {
     private static final String BTOA_MODE = "btoa";
     private static final String ALL_MODE = "allcoincidences";
 
-    private static final String MODELS = "MODELS";
-
-
     @Autowired
     private ApiCatalogsService service;
+
+    @Autowired
+    private CatalogTypeService catalogTypeService;
+
     @Autowired
     private ApplicationContext context;
 
@@ -122,18 +125,27 @@ public class ApiCatalogsController {
         traducciones.put("RAMOS", "RAMOS");
         traducciones.put("SEXS", "SEXOS");
         traducciones.put("MATRIAL_STATUSES", "ECIVIL");
-        //traducciones.put("POSITIONS", "TBD");
 
         catalogType = traducciones.getOrDefault(catalogType, catalogType);
 
-        if (filters != null && filters.contains("=")) {
-            filters = filters.substring(filters.indexOf("=") + 1);
+        if (filters != null){
+            String[] pairs = filters.split(",");
+
+            StringBuilder concatenatedValues = new StringBuilder();
+
+            for (String pair : pairs) {
+
+                String[] keyValue = pair.split("=");
+                concatenatedValues.append(keyValue[1]);
+            }
+
+            filters = concatenatedValues.toString();
         }
 
         try {
             List<CatalogItem> catalogItems = procedurePremService.findCatalogs(catalogType,filters);
 
-            response.put(catalogType, catalogItems);
+            response.put("content", catalogItems);
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 
         } catch (DataAccessException e) {
@@ -154,6 +166,8 @@ public class ApiCatalogsController {
     ) {
         Map<String, Object> response = new HashMap<String, Object>();
 
+        List<CatalogType> types = catalogTypeService.findAll();
+        response.put("content", types);
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
