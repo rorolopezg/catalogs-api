@@ -3,6 +3,7 @@ package pa.com.sura.catalogs.controllers;
 import pa.com.sura.catalogs.models.dto.mappings.ListOfMapsDTO;
 import pa.com.sura.catalogs.models.dto.mappings.MapSystemDTO;
 import pa.com.sura.catalogs.models.entities.mobilityplatform.CatalogType;
+import pa.com.sura.catalogs.models.entities.premium.BusinessRules;
 import pa.com.sura.catalogs.models.entities.premium.CatalogItem;
 import pa.com.sura.catalogs.models.entities.mobilityplatform.MapTable;
 import pa.com.sura.catalogs.models.dto.mappings.MappingObjectDTO;
@@ -109,7 +110,9 @@ public class ApiCatalogsController {
     ) {
         Map<String, Object> response = new HashMap<>();
         Map<String, String> traducciones = new HashMap<>();
-
+        List<CatalogItem> catalogItems = new ArrayList<>();
+        Integer plan = null;
+        String brand = null;
         traducciones.put("COUNTRIES", "PAISES");
         traducciones.put("STATES", "PROVINCIAS");
         traducciones.put("REGIONS", "DISTRITOS");
@@ -126,8 +129,6 @@ public class ApiCatalogsController {
         traducciones.put("SEXS", "SEXOS");
         traducciones.put("MATRIAL_STATUSES", "ECIVIL");
 
-        catalogType = traducciones.getOrDefault(catalogType, catalogType);
-
         if (filters != null){
             String[] pairs = filters.split(",");
 
@@ -137,13 +138,44 @@ public class ApiCatalogsController {
 
                 String[] keyValue = pair.split("=");
                 concatenatedValues.append(keyValue[1]);
+
+                if (keyValue[0].equals("MAKERS")){
+                    brand = keyValue[1];
+                }
+                if (keyValue[0].equals("PLAN")){
+                    plan = Integer.valueOf(keyValue[1]);
+                }
             }
 
             filters = concatenatedValues.toString();
         }
 
+        if (plan != null) {
+            BusinessRules rules = procedurePremService.findRules(plan);
+
+            if (rules.getFiltroPorMarcas().equals("S")){
+                traducciones.put("MAKERS", "IMARCAS");
+            }
+
+            if (rules.getExcluirModelos().equals("S")){
+                traducciones.put("MODELS", "MODELOSEXCLUIDOS");
+            }
+
+            if (rules.getFiltroPorTipoChasis().equals("S")){
+                traducciones.put("CHASSIS_TYPES", "ITIPOSCHASIS");
+            }
+        }
+
+        catalogType = traducciones.getOrDefault(catalogType, catalogType);
         try {
-            List<CatalogItem> catalogItems = procedurePremService.findCatalogs(catalogType,filters);
+            if (catalogType.equals("MODELOSEXCLUIDOS")&& brand != null){
+                List<CatalogItem> allModels = new ArrayList<>(procedurePremService.findCatalogs("MODELOS",brand));
+                List<CatalogItem> exclModels = procedurePremService.findCatalogs(catalogType,filters);
+                allModels.removeAll(exclModels);
+                catalogItems.addAll(allModels);
+            }else {
+                catalogItems = procedurePremService.findCatalogs(catalogType,filters);
+            }
 
             response.put("content", catalogItems);
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
